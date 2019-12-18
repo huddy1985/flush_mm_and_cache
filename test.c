@@ -26,7 +26,7 @@ int main()
 
 	int page_count = 4096;
 	char *mem = (char*)calloc(1, page_count);
-    char *dst = (char*)calloc(1, page_count);
+	char *dst = (char*)calloc(1, page_count);
 
 	if (!mem) {
 		printf("malloc mem failed\n");
@@ -46,14 +46,15 @@ int main()
 
 	while (1) {
 		int count = 2095;
-		char sz = 0;
+		unsigned long sz = 0;
+		printf("%p\n", mem);
 		clock_gettime(CLOCK_REALTIME, &start);
 		while (count--) {
-			memcpy(&dst[count], &mem[count], 1);
+			sz += mem[count];
 		}
 		clock_gettime(CLOCK_REALTIME, &end);
 
-		printf("spend time is %ld \n", end.tv_nsec - start.tv_nsec);
+		printf("spend time is %ld, result is %lu\n", end.tv_nsec - start.tv_nsec, sz);
 		nanosleep(&req, NULL);
 	}
 }

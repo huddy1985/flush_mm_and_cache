@@ -19,9 +19,9 @@ int main(int argc,char *argv[]){
     }
 
     type = atoi(argv[1]);
-    if (type != FLS_TYPE_PROCESS ||
+    if (type != FLS_TYPE_PROCESS && 
         type != FLS_TYPE_THREAD) {
-        printf("only support fls type is %d or %d",
+        printf("only support fls type is %d or %d\n",
                FLS_TYPE_PROCESS,
                FLS_TYPE_THREAD);
             return -1;

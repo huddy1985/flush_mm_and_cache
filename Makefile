@@ -1,7 +1,7 @@
 
 obj-m:= flush_tlb.o
 
-KDIR := /lib/modules/$(shell uname -r)/build
+KDIR := /usr/src/kernels/3.10.0-1062.9.1.el7.x86_64/
 PWD := $(shell pwd)
 
 default:
