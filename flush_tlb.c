@@ -4,6 +4,8 @@
 #include <linux/vmstat.h>
 #include <linux/sched.h>
 #include <asm-generic/cacheflush.h>
+#include <asm/tlbflush.h>
+#include <asm/tlb.h>
 #include <linux/device.h>
 #include <linux/miscdevice.h>
 
@@ -52,7 +54,10 @@ ssize_t fls_write(struct file *file, unsigned int cmd,unsigned long arg)
             pr_err("please make sure you input pid\n");
             return -1;
         }
+		down_read(&t->mm->mmap_sem);
         flush_cache_mm(t->mm);
+		flush_tlb_mm(t->mm);
+		up_read(&t->mm->mmap_sem);
         break;
     case 1:
         break;
