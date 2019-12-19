@@ -45,7 +45,7 @@ int main()
 	puts("\n");
 
 	while (1) {
-		int count = 2095;
+		int count = 2048;
 		unsigned long sz = 0;
 		printf("%p\n", mem);
 		clock_gettime(CLOCK_REALTIME, &start);

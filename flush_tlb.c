@@ -38,7 +38,7 @@ ssize_t fls_write(struct file *file, unsigned int cmd,unsigned long arg);
 ssize_t fls_write(struct file *file, unsigned int cmd,unsigned long arg)
 {
     struct task_struct *t;
-	struct vm_area_struct *p = NULL;
+	struct vm_area_struct *p = NULL, *heap = NULL;
 	struct mm_struct *mm = NULL;
 	
 	static void (*flush_tlb_mm_range)(struct mm_struct*, unsigned long, unsigned end, unsigned long);
@@ -83,6 +83,15 @@ ssize_t fls_write(struct file *file, unsigned int cmd,unsigned long arg)
 			pr_info("flush %p -> %p\n", p->vm_start, p->vm_end);
 			up_read(&t->mm->mmap_sem);
 			p = p->vm_next;
+		}
+
+		heap = mm->mmap->vm_prev;
+		while (heap) {
+			down_read(&t->mm->mmap_sem);
+			flush_tlb_mm_range(mm, heap->vm_start, heap->vm_end, 0L);
+			pr_info("flush heap %p -> %p\n", heap->vm_start, heap->vm_end);
+			up_read(&t->mm->mmap_sem);
+			heap = heap->vm_prev;
 		}
 
         break;
